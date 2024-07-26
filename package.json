@@ -2,7 +2,7 @@
   "name": "full-project-nest",
   "version": "0.0.1",
   "description": "A full backend project with NestJS",
-  "repository": "",
+  "repository": "https://github.com/EddieBenn/full-project-NestJS.git",
   "author": "Eddie Benn",
   "private": true,
   "license": "UNLICENSED",
