@@ -14,7 +14,9 @@ const config = {
   database: DB_NAME!,
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: true,
+  logging: true,
   migrations: ['dist/src/migrations/*{.ts,.js}'],
+  // migrationsRun: true,
   autoLoadEntities: true,
 };
 
