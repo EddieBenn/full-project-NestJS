@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LocationCounterModule } from './location-counter/location-counter.module';
 import typeorm from '../ormconfig';
 
 @Module({
@@ -16,6 +17,7 @@ import typeorm from '../ormconfig';
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
+    LocationCounterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
