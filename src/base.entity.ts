@@ -18,3 +18,9 @@ export class BaseEntity {
   @Column({ default: null, nullable: true })
   public deleted_at?: Date;
 }
+
+export enum RolesEnum {
+  USERS = 'users',
+  AGENT = 'agent',
+  ADMIN = 'admin',
+}
