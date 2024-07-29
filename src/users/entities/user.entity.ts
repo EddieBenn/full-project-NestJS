@@ -63,7 +63,7 @@ export class Users extends BaseEntity {
   @Column({
     nullable: false,
     type: 'varchar',
-    enum: RolesEnum.USERS,
+    enum: [RolesEnum.USERS],
     default: RolesEnum.USERS
   })
   role: RolesEnum;
