@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LocationCounterModule } from './location-counter/location-counter.module';
+import { UsersModule } from './users/users.module';
 import typeorm from '../ormconfig';
 
 @Module({
@@ -18,6 +19,7 @@ import typeorm from '../ormconfig';
         configService.get('typeorm'),
     }),
     LocationCounterModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
