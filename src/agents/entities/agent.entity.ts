@@ -1,17 +1,13 @@
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
 import { BaseEntity, RolesEnum } from '../../base.entity';
-import {
-  ChannelEnum,
-  DeviceTypeEnum,
-  GenderEnum,
-} from '../dto/create-user.dto';
 import { Exclude } from 'class-transformer';
+import { GenderEnum } from 'src/users/dto/create-user.dto';
 
 @Unique(['email'])
 @Unique(['phone'])
 @Unique(['apple_id'])
-@Entity({ name: 'users' })
-export class Users extends BaseEntity {
+@Entity({ name: 'agents' })
+export class Agents extends BaseEntity {
   @BeforeInsert()
   fieldsToModify() {
     this.city = this.city.toLowerCase();
@@ -43,43 +39,15 @@ export class Users extends BaseEntity {
   })
   gender: string;
 
-  @Column({ nullable: false, type: 'integer', default: 1 })
-  stage: number;
-
   @Column({
     nullable: false,
     type: 'varchar',
-    enum: [
-      DeviceTypeEnum.IMAC,
-      DeviceTypeEnum.IPAD,
-      DeviceTypeEnum.IPHONE,
-      DeviceTypeEnum.IWATCH,
-      DeviceTypeEnum.MACBOOK_AIR,
-      DeviceTypeEnum.MACBOOK_PRO,
-    ],
-    default: DeviceTypeEnum.IPHONE,
-  })
-  device_type: string;
-
-  @Column({
-    nullable: false,
-    type: 'varchar',
-    enum: [RolesEnum.USER],
-    default: RolesEnum.USER
+    enum: [RolesEnum.AGENT],
+    default: RolesEnum.AGENT
   })
   role: string;
-
-  @Column({ nullable: false, type: 'uuid' })
-  agent_id: string;
 
   @Column({ nullable: false, type: 'varchar' })
   apple_id: string;
 
-  @Column({
-    nullable: false,
-    type: 'varchar',
-    enum: [ChannelEnum.ONLINE, ChannelEnum.REFERRAL, ChannelEnum.WALK_IN],
-    default: ChannelEnum.ONLINE,
-  })
-  channel: string;
 }

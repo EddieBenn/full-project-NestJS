@@ -20,7 +20,15 @@ export class BaseEntity {
 }
 
 export enum RolesEnum {
-  USERS = 'users',
+  USER = 'user',
   AGENT = 'agent',
   ADMIN = 'admin',
+}
+
+export interface IPagination {
+  totalRows: number;
+  perPage: number;
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
 }
