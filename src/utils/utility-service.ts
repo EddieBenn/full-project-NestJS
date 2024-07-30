@@ -39,7 +39,7 @@ class UtilityService {
   };
 
   generatePassword = (last_name: string) => {
-    const newPassword = (last_name += Math.floor(1000 + Math.random() * 90000));
+    const newPassword = (last_name + Math.floor(1000 + Math.random() * 90000));
     return newPassword;
   };
 

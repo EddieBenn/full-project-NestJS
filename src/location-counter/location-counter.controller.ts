@@ -31,7 +31,6 @@ export class LocationCounterController {
   @Get()
   getAllLocationCounters(@Query() query: LocationCounterFilter) {
     try {
-      console.log(query)
       return this.locationCounterService.getAllLocationCounters(query);
     } catch (error) {
       throw error;

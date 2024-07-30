@@ -59,3 +59,20 @@ export class CreateUserDto {
   @IsEnum(ChannelEnum)
   channel: ChannelEnum;
 }
+
+export interface IUser {
+  id?: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  password: string;
+  gender: string;
+  city: string;
+  stage: number;
+  device_type: string;
+  role: string;
+  agent_id: string;
+  apple_id: string;
+  channel: string;
+}
