@@ -8,6 +8,8 @@ import { UsersModule } from './users/users.module';
 import { AgentsModule } from './agents/agents.module';
 import { AuthModule } from './auth/auth.module';
 import typeorm from '../ormconfig';
+import { addTransactionalDataSource } from 'typeorm-transactional';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -19,6 +21,12 @@ import typeorm from '../ormconfig';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm'),
+      async dataSourceFactory(options) {
+        if (!options) {
+          throw new Error('Invalid options passed');
+        }
+        return addTransactionalDataSource(new DataSource(options));
+      },
     }),
     LocationCounterModule,
     UsersModule,
