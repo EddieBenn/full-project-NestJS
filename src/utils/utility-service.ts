@@ -1,6 +1,5 @@
 import { transporter } from './nodemailer-config';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
 
@@ -32,10 +31,6 @@ class UtilityService {
     const salt = await bcrypt.genSalt(saltRounds);
     const hash = await bcrypt.hash(password, salt);
     return hash;
-  };
-
-  generateToken = async (data: any) => {
-    return jwt.sign(data, `${process.env.APP_SECRET}`, { expiresIn: `15h` });
   };
 
   generatePassword = (last_name: string) => {
