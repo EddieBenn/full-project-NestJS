@@ -15,9 +15,9 @@ export class AuthService {
   generateToken = async (user: IReqUser): Promise<string> => {
     const payload = { ...user, sub: user.id }
       const account_token = this.jwtService.signAsync(payload, {
-          secret: this.configService.get<string>('AT_SECRET'), //'access token-secretKey',
+          secret: this.configService.get<string>('JWT_SECRET'), //'access token-secretKey',
           issuer: 'APPLE-RENTALS',
-          expiresIn: '1h',
+          expiresIn: this.configService.get<string>('JWT_EXPIRY'),
       })
   return account_token;
   };
