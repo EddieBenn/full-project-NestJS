@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LocationCounterModule } from './location-counter/location-counter.module';
 import { UsersModule } from './users/users.module';
 import { AgentsModule } from './agents/agents.module';
+import { AuthModule } from './auth/auth.module';
 import typeorm from '../ormconfig';
 
 @Module({
@@ -22,6 +23,7 @@ import typeorm from '../ormconfig';
     LocationCounterModule,
     UsersModule,
     AgentsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

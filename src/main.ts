@@ -14,6 +14,7 @@ import {
   type NestExpressApplication,
 } from '@nestjs/platform-express';
 import rateLimit from 'express-rate-limit';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap(): Promise<NestExpressApplication> {
   initializeTransactionalContext();
@@ -34,7 +35,7 @@ async function bootstrap(): Promise<NestExpressApplication> {
       max: 100, // limit each IP to 100 requests per 15 mintutes
     }),
   );
-
+  app.use(cookieParser());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
 
   app.useGlobalPipes(

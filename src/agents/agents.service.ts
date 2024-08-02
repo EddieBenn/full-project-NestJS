@@ -22,9 +22,11 @@ export class AgentsService {
   async createAgent(data: CreateAgentDto): Promise<IAgent> {
     const generatedAppleId = await this.locationCounterService.generateAppleID(data.city, UserTypeEnum.AGENT)
     const hashedPassword = await UtilService.hashPassword(data.password);
+    const email = `${generatedAppleId.toLowerCase()}@apple.com`;
 
     const agent: IAgent = {
       ...data,
+      email,
       gender: GenderEnum[data.gender.toUpperCase()],
       role: RolesEnum.AGENT,
       apple_id: generatedAppleId,
