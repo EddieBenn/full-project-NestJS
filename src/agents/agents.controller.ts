@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, Put, UseGuards, UsePipes } from '@nestjs/common';
 import { AgentsService } from './agents.service';
-import { AgentFilter, CreateAgentDto } from './dto/create-agent.dto';
+import { AgentFilter, CreateAgentDto, ForgotPasswordDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RoleGuard } from 'src/auth/role.guard';
+import { Roles } from 'src/auth/role.decorator';
+import { ADMIN_ROLES } from 'src/base.entity';
+import { PasswordMatch } from 'src/auth/password-match.pipe';
+
 
 @Controller('agents')
+@UseGuards(AuthGuard, RoleGuard)
+@Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
 export class AgentsController {
   constructor(private readonly agentsService: AgentsService) {}
 
@@ -45,6 +53,17 @@ export class AgentsController {
       throw error;
     }
   }
+
+  @Post('forgot-password')
+  @UsePipes(PasswordMatch)
+  async forgotPassword(@Body() body: ForgotPasswordDto) {
+    try {
+      return this.agentsService.forgotPassword(body);
+    } catch (error) {
+      throw error;
+    }
+  }
+
 
   @Delete(':id')
   deleteAgentById(@Param('id', new ParseUUIDPipe()) id: string) {

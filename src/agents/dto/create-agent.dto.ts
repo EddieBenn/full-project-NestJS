@@ -1,6 +1,12 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString, Matches } from "class-validator";
-import { IPagination } from "src/base.entity";
-import { GenderEnum } from "src/users/dto/create-user.dto";
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  Matches,
+} from 'class-validator';
+import { IPagination } from 'src/base.entity';
+import { GenderEnum } from 'src/users/dto/create-user.dto';
 
 export class CreateAgentDto {
   @IsNotEmpty()
@@ -18,9 +24,13 @@ export class CreateAgentDto {
 
   @IsNotEmpty()
   @IsString()
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, {
-    message: 'Password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
-  })
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    {
+      message:
+        'Password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    },
+  )
   password: string;
 
   @IsNotEmpty()
@@ -34,7 +44,6 @@ export class CreateAgentDto {
   @IsNotEmpty()
   @IsEnum(GenderEnum)
   gender: GenderEnum;
-
 }
 
 export interface IAgent {
@@ -52,12 +61,59 @@ export interface IAgent {
 }
 
 export interface AgentFilter {
-    city?: string;
-    email?: string;
-    phone?: string;
-    start_date?: string;
-    end_date?: string;
-    isPaginate?: boolean;
-    size?: number;
-    page?: number;
-  }
+  city?: string;
+  email?: string;
+  phone?: string;
+  start_date?: string;
+  end_date?: string;
+  isPaginate?: boolean;
+  size?: number;
+  page?: number;
+}
+
+export class ForgotPasswordDto {
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    {
+      message:
+        'Password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    },
+  )
+  new_password: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    {
+      message:
+        'Confirm password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    },
+  )
+  confirm_password: string;
+}
+
+export class LoginDto {
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    {
+      message:
+        'Password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    },
+  )
+  password: string;
+}
