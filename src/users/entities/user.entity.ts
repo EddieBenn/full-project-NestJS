@@ -1,4 +1,11 @@
-import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  Unique,
+} from 'typeorm';
 import { BaseEntity, RolesEnum } from '../../base.entity';
 import {
   ChannelEnum,
@@ -6,6 +13,7 @@ import {
   GenderEnum,
 } from '../dto/create-user.dto';
 import { Exclude } from 'class-transformer';
+import { Agents } from 'src/agents/entities/agent.entity';
 
 @Unique(['email'])
 @Unique(['phone'])
@@ -65,7 +73,7 @@ export class Users extends BaseEntity {
     nullable: false,
     type: 'varchar',
     enum: [RolesEnum.USER],
-    default: RolesEnum.USER
+    default: RolesEnum.USER,
   })
   role: string;
 
@@ -82,4 +90,8 @@ export class Users extends BaseEntity {
     default: ChannelEnum.ONLINE,
   })
   channel: string;
+
+  @ManyToOne(() => Agents, (ag) => ag.users)
+  @JoinColumn({ name: 'agent_id', referencedColumnName: 'id' })
+  agent: Agents;
 }

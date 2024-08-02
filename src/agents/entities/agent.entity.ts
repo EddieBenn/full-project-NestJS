@@ -1,7 +1,8 @@
-import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany, Unique } from 'typeorm';
 import { BaseEntity, RolesEnum } from '../../base.entity';
 import { Exclude } from 'class-transformer';
 import { GenderEnum } from 'src/users/dto/create-user.dto';
+import { Users } from 'src/users/entities/user.entity';
 
 @Unique(['email'])
 @Unique(['phone'])
@@ -50,4 +51,6 @@ export class Agents extends BaseEntity {
   @Column({ nullable: false, type: 'varchar' })
   apple_id: string;
 
+  @OneToMany(() => Users, (u) => u.agent)
+  users: Users[];
 }

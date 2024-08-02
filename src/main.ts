@@ -14,7 +14,7 @@ import {
   type NestExpressApplication,
 } from '@nestjs/platform-express';
 import rateLimit from 'express-rate-limit';
-import cookieParser from 'cookie-parser';;
+import cookieParser from 'cookie-parser';
 
 async function bootstrap(): Promise<NestExpressApplication> {
   initializeTransactionalContext();
