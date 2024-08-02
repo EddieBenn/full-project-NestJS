@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, Put, UseGuards, UsePipes } from '@nestjs/common';
 import { AgentsService } from './agents.service';
-import { AgentFilter, CreateAgentDto, ForgotPasswordDto } from './dto/create-agent.dto';
+import { AgentFilter, CreateAgentDto, ForgotPasswordDto, LoginDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role.guard';
@@ -59,6 +59,15 @@ export class AgentsController {
   async forgotPassword(@Body() body: ForgotPasswordDto) {
     try {
       return this.agentsService.forgotPassword(body);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post('login')
+  async login(@Body() body: LoginDto) {
+    try {
+      return this.agentsService.loginAgent(body);
     } catch (error) {
       throw error;
     }
