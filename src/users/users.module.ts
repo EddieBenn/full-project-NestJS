@@ -4,6 +4,8 @@ import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/user.entity';
 import { LocationCounterModule } from 'src/location-counter/location-counter.module';
+import { AgentsModule } from 'src/agents/agents.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -11,6 +13,8 @@ import { LocationCounterModule } from 'src/location-counter/location-counter.mod
       Users,
     ]),
     LocationCounterModule,
+    AgentsModule,
+    AuthModule
   ],
   controllers: [UsersController],
   providers: [UsersService],
