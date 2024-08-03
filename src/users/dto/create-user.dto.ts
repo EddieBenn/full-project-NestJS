@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsEmail,
   IsEnum,
@@ -34,8 +35,8 @@ export class CreateUserDto {
   @IsString()
   last_name: string;
 
+  @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
-  @IsString()
   @IsEmail()
   email: string;
 
@@ -43,6 +44,7 @@ export class CreateUserDto {
   @IsString()
   phone: string;
 
+  @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsString()
   city: string;
@@ -75,4 +77,15 @@ export interface IUser {
   agent_id: string;
   apple_id: string;
   channel: string;
+}
+
+export interface UserFilter {
+  city?: string;
+  email?: string;
+  phone?: string;
+  start_date?: string;
+  end_date?: string;
+  isPaginate?: boolean;
+  size?: number;
+  page?: number;
 }

@@ -1,3 +1,5 @@
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsEmail, IsString, Matches } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -47,4 +49,51 @@ export interface IReqUser {
 export enum ADMIN_ROLES {
   ADMIN = 'admin',
   AGENT = 'agent',
+}
+
+export class ForgotPasswordDto {
+  @Transform((val) => val.value.toLowerCase())
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    {
+      message:
+        'Password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    },
+  )
+  new_password: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    {
+      message:
+        'Confirm password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    },
+  )
+  confirm_password: string;
+}
+
+export class LoginDto {
+  @Transform((val) => val.value.toLowerCase())
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    {
+      message:
+        'Password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    },
+  )
+  password: string;
 }

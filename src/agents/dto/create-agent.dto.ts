@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsEmail,
   IsEnum,
@@ -17,8 +18,8 @@ export class CreateAgentDto {
   @IsString()
   last_name: string;
 
+  @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
-  @IsString()
   @IsEmail()
   email: string;
 
@@ -37,6 +38,7 @@ export class CreateAgentDto {
   @IsString()
   phone: string;
 
+  @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsString()
   city: string;
@@ -69,51 +71,4 @@ export interface AgentFilter {
   isPaginate?: boolean;
   size?: number;
   page?: number;
-}
-
-export class ForgotPasswordDto {
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-    {
-      message:
-        'Password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
-    },
-  )
-  new_password: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-    {
-      message:
-        'Confirm password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
-    },
-  )
-  confirm_password: string;
-}
-
-export class LoginDto {
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-    {
-      message:
-        'Password must be at least 6 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.',
-    },
-  )
-  password: string;
 }

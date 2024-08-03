@@ -13,6 +13,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
+  @SkipAuth()
   async generateToken(@Body() user: IReqUser) {
     try {
       return this.authService.generateToken(user);

@@ -9,9 +9,9 @@ class UtilityService {
   sendPasswordMail = async (email: string, password: string) => {
     try {
       const response = await transporter.sendMail({
-        from: 'edidiongndaobong5@gmail.com',
+        from: process.env.GMAIL_USER,
         to: email,
-        subject: 'Welcome to Apple Rentals',
+        subject: 'APPLE RENTAL CREDENTIALS',
         html: `<div width="50%" style="text-align: center; padding: 10px; border-radius: 5px; border: 2px solid gold;">
                   <h1>Welcome to Apple Rentals<h1>
                   <h3 style="font-size: 20px">Here are your login details</h3>
@@ -33,8 +33,21 @@ class UtilityService {
     return hash;
   };
 
-  generatePassword = (last_name: string) => {
-    const newPassword = last_name + Math.floor(1000 + Math.random() * 90000);
+  generatePassword = (last_name: string): string => {
+    // Capitalize the first letter of the last name
+    const capitalizedLastName = last_name.charAt(0).toUpperCase() + last_name.slice(1);
+  
+    // Generate a random number between 1000 and 99999
+    const randomNumber = Math.floor(1000 + Math.random() * 90000);
+  
+    // Define a set of special characters
+    const specialCharacters = "!@#$%^&*()_+[]{}|;:',.<>?";
+  
+    // Choose a random special character
+    const randomSpecialChar = specialCharacters.charAt(Math.floor(Math.random() * specialCharacters.length));
+  
+    // Combine everything to form the new password
+    const newPassword = `${capitalizedLastName}${randomNumber}${randomSpecialChar}`;
     return newPassword;
   };
 
