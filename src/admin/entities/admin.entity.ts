@@ -1,15 +1,13 @@
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany, Unique } from 'typeorm';
 import { BaseEntity, RolesEnum } from '../../base.entity';
 import { Exclude } from 'class-transformer';
 import { GenderEnum } from 'src/users/dto/create-user.dto';
-import { Users } from 'src/users/entities/user.entity';
-import { Admin } from 'src/admin/entities/admin.entity';
+import { Agents } from 'src/agents/entities/agent.entity';
 
 @Unique(['email'])
 @Unique(['phone'])
-@Unique(['apple_id'])
-@Entity({ name: 'agents' })
-export class Agents extends BaseEntity {
+@Entity({ name: 'admin' })
+export class Admin extends BaseEntity {
   @BeforeInsert()
   fieldsToModify() {
     this.city = this.city.toLowerCase();
@@ -44,21 +42,12 @@ export class Agents extends BaseEntity {
   @Column({
     nullable: false,
     type: 'varchar',
-    enum: [RolesEnum.AGENT],
-    default: RolesEnum.AGENT
+    enum: [RolesEnum.ADMIN],
+    default: RolesEnum.ADMIN
   })
   role: string;
 
-  @Column({ nullable: false, type: 'varchar' })
-  apple_id: string;
-
-  @Column({ nullable: true, type: 'uuid' })
-  admin_id: string;
-
-  @OneToMany(() => Users, (u) => u.agent)
-  users: Users[];
-
-  @ManyToOne(() => Admin, (ad) => ad.agents)
-  @JoinColumn({ name: 'admin_id', referencedColumnName: 'id' })
-  admin: Admin;
+  @OneToMany(() => Agents, (ag) => ag.admin)
+  agents: Agents[];
 }
+

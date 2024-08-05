@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Query, ParseUUIDPipe, Put, UseGuards, UsePipes, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, ParseUUIDPipe, Put, UseGuards, UsePipes, Res, Req } from '@nestjs/common';
 import { AgentsService } from './agents.service';
 import { AgentFilter, CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
@@ -15,10 +15,11 @@ export class AgentsController {
   constructor(private readonly agentsService: AgentsService) {}
 
   @Post()
-  @SkipAuth()
-  async createAgent(@Body() body: CreateAgentDto) {
+  @UseGuards(RoleGuard)
+  @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
+  async createAgent(@Body() body: CreateAgentDto, @Req() req: any) {
     try {
-      return this.agentsService.createAgent(body);
+      return this.agentsService.createAgent(body, req?.user);
     } catch (error) {
       throw error;
     }

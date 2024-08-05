@@ -43,7 +43,7 @@ export interface IReqUser {
   phone: string;
   city: string;
   role: string;
-  apple_id: string;
+  apple_id?: string;
 }
 
 export enum ADMIN_ROLES {

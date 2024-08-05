@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import typeorm from '../ormconfig';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { DataSource } from 'typeorm';
     UsersModule,
     AgentsModule,
     AuthModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
