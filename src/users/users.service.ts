@@ -37,7 +37,7 @@ export class UsersService {
   @Transactional()
   async createUser(data: CreateUserDto, user: IReqUser): Promise<IUser> {
     const { email, city } = data;
-    let assignedAgent;
+    let assignedAgent: string;
     const emailExist = await this.usersRepository.exists({ where: { email } });
     if(emailExist) {
       throw new HttpException(`user with email: ${email} already exist`, HttpStatus.UNPROCESSABLE_ENTITY );
@@ -100,7 +100,7 @@ export class UsersService {
         totalRows: count,
         perPage: size,
         currentPage: page,
-        totalPages: Math.ceil(count / size),
+        totalPages,
         hasNextPage: page < totalPages,
       },
     };

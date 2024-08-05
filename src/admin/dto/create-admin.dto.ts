@@ -6,10 +6,9 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
-import { IPagination } from 'src/base.entity';
 import { GenderEnum } from 'src/users/dto/create-user.dto';
 
-export class CreateAgentDto {
+export class CreateAdminDto {
   @IsNotEmpty()
   @IsString()
   first_name: string;
@@ -48,7 +47,7 @@ export class CreateAgentDto {
   gender: GenderEnum;
 }
 
-export interface IAgent {
+export interface IAdmin {
   id?: string;
   first_name: string;
   last_name: string;
@@ -58,12 +57,9 @@ export interface IAgent {
   gender: string;
   city: string;
   role: string;
-  apple_id: string;
-  admin_id?: string;
-  pagination?: IPagination;
 }
 
-export interface AgentFilter {
+export interface AdminFilter {
   city?: string;
   email?: string;
   phone?: string;
@@ -73,3 +69,7 @@ export interface AgentFilter {
   size?: number;
   page?: number;
 }
+
+
+
+

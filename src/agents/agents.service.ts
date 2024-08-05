@@ -12,7 +12,7 @@ import { LocationCounterService } from 'src/location-counter/location-counter.se
 import { UserTypeEnum } from 'src/location-counter/dto/create-location-counter.dto';
 import { UtilService } from 'src/utils/utility-service';
 import { GenderEnum } from 'src/users/dto/create-user.dto';
-import { ForgotPasswordDto, LoginDto, RolesEnum } from 'src/base.entity';
+import { ADMIN_ROLES, ForgotPasswordDto, IReqUser, LoginDto, RolesEnum } from 'src/base.entity';
 import { buildAgentFilter } from 'src/filters/query-filter';
 import { Transactional } from 'typeorm-transactional';
 import { AuthService } from 'src/auth/auth.service';
@@ -32,7 +32,7 @@ export class AgentsService {
   ) {}
 
   @Transactional()
-  async createAgent(data: CreateAgentDto): Promise<IAgent> {
+  async createAgent(data: CreateAgentDto, user: IReqUser): Promise<IAgent> {
     const generatedAppleId = await this.locationCounterService.generateAppleID(
       data.city,
       UserTypeEnum.AGENT,
@@ -47,6 +47,7 @@ export class AgentsService {
       role: RolesEnum.AGENT,
       apple_id: generatedAppleId,
       password: hashedPassword,
+      admin_id: user.role === ADMIN_ROLES.ADMIN ? user.id : null
     };
     return this.agentsRepository.save(agent);
   }
@@ -71,7 +72,7 @@ export class AgentsService {
         totalRows: count,
         perPage: size,
         currentPage: page,
-        totalPages: Math.ceil(count / size),
+        totalPages,
         hasNextPage: page < totalPages,
       },
     };
