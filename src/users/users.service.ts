@@ -1,4 +1,4 @@
-import { ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import {
   ChannelEnum,
   CreateUserDto,
@@ -44,7 +44,7 @@ export class UsersService {
     }
 
     if(city.toLowerCase() !== user.city && user.role === ADMIN_ROLES.AGENT) {
-      throw new ForbiddenException(`You do not have permission to create prospect outside your city. Your city is: ${user.city}`);
+      throw new ForbiddenException(`You do not have permission to create user outside your city. Your city is: ${user.city}`);
     }
 
     if(user.role === ADMIN_ROLES.ADMIN) {
@@ -192,5 +192,49 @@ export class UsersService {
 
   async deleteUserById(id: string) {
     return this.usersRepository.delete(id);
+  }
+
+  async reassignOneUser(new_agent_id: string, user_id: string) {
+    const getNewAgent = await this.agentsService.getAgentById(new_agent_id)
+    if(!getNewAgent.id) {
+      throw new NotFoundException(`agent with id: ${new_agent_id} not found`)
+    }
+
+    const getUser = await this.usersRepository.findOne({
+       where: { id: user_id }
+      })
+    if(!getUser.id) {
+      throw new NotFoundException(`user with id: ${user_id} not found`)
+    }
+
+    if(getNewAgent.city.toLowerCase() !== getUser.city.toLowerCase()) {
+      throw new BadRequestException(`Agent not in the same city as user. User city is: ${getUser.city}, while agent is in ${getNewAgent.city}`);
+    }
+
+    return this.usersRepository.update(
+      { id: user_id},
+      { agent_id: new_agent_id } 
+    )
+  }
+
+  async reassignAllUsersOfAnAgent(new_agent_id: string, current_agent_id: string) {
+    const getNewAgent = await this.agentsService.getAgentById(new_agent_id)
+    if(!getNewAgent.id) {
+      throw new NotFoundException(`new agent assignee with id: ${new_agent_id} not found`)
+    }
+
+    const getCurrentAgent = await this.agentsService.getAgentById(current_agent_id)
+    if(!getCurrentAgent.id) {
+      throw new NotFoundException(`current agent with id: ${current_agent_id} not found`)
+    }
+
+    if(getNewAgent.city.toLowerCase() !== getCurrentAgent.city.toLowerCase()) {
+      throw new BadRequestException(`Both agents are not in the same city. Current agent city is: ${getCurrentAgent.city}, while new agent assignee is in ${getNewAgent.city}`);
+    }
+
+    return this.usersRepository.update(
+      { agent_id: current_agent_id},
+      { agent_id: new_agent_id }
+    )
   }
 }

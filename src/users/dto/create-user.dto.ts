@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsString,
+  MinLength,
 } from 'class-validator';
 
 export enum DeviceTypeEnum {
@@ -42,6 +43,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(10)
   phone: string;
 
   @Transform((val) => val.value.toLowerCase())
@@ -88,4 +90,19 @@ export interface UserFilter {
   isPaginate?: boolean;
   size?: number;
   page?: number;
+}
+
+export class ReassignOneUserDto {
+  @IsNotEmpty()
+  @IsString()
+  new_agent_id: string;
+}
+export class ReassignAllUsersDto {
+  @IsNotEmpty()
+  @IsString()
+  new_agent_id: string;
+
+  @IsNotEmpty()
+  @IsString()
+  current_agent_id: string;
 }
