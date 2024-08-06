@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsString,
   Matches,
+  MinLength,
 } from 'class-validator';
 import { IPagination } from 'src/base.entity';
 import { GenderEnum } from 'src/users/dto/create-user.dto';
@@ -36,6 +37,7 @@ export class CreateAgentDto {
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(10)
   phone: string;
 
   @Transform((val) => val.value.toLowerCase())

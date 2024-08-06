@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Param, Req, UseGuards, Get, Query, ParseUUIDPipe, Put, UsePipes, Res, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, UserFilter } from './dto/create-user.dto';
+import { CreateUserDto, ReassignAllUsersDto, ReassignOneUserDto, UserFilter } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/auth/role.decorator';
@@ -37,6 +37,33 @@ export class UsersController {
   getUserById(@Param('id', new ParseUUIDPipe()) id: string) {
     try {
       return this.usersService.getUserById(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post('reassign')
+  @UseGuards(RoleGuard)
+  @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
+  async reassignAllUsersOfAnAgent(@Body() body: ReassignAllUsersDto) {
+    try {
+      const { new_agent_id, current_agent_id } = body;
+      return this.usersService.reassignAllUsersOfAnAgent(new_agent_id, current_agent_id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Put('reassign-user/:id')
+  @UseGuards(RoleGuard)
+  @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
+  reassignOneUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() body: ReassignOneUserDto,
+  ) {
+    try {
+      const { new_agent_id } = body
+      return this.usersService.reassignOneUser(new_agent_id, id);
     } catch (error) {
       throw error;
     }
