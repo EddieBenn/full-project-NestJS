@@ -76,7 +76,7 @@ export class AdminService {
   }
 
   @Transactional()
-  async forgotPassword(data: ForgotPasswordDto) {
+  async forgotPassword(data: ForgotPasswordDto, res: Response) {
     const admin = await this.adminRepository.findOne({
       where: { email: data.email },
     });
@@ -88,7 +88,10 @@ export class AdminService {
       { email: data.email },
       { password: hashedPassword },
     );
-    return `Password reset successful`;
+
+    return res.status(HttpStatus.OK).json({
+      message: 'Password reset successful',
+    });
   }
 
   @Transactional()

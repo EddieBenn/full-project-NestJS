@@ -1,4 +1,4 @@
-import { Transform } from 'class-transformer';
+import { Exclude, Transform } from 'class-transformer';
 import {
   IsEmail,
   IsEnum,
@@ -42,6 +42,7 @@ export class CreateAdminDto {
   @IsString()
   city: string;
 
+  @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsEnum(GenderEnum)
   gender: GenderEnum;

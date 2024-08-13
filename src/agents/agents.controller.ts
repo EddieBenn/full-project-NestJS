@@ -64,9 +64,9 @@ export class AgentsController {
   @Post('forgot-password')
   @SkipAuth()
   @UsePipes(PasswordMatch)
-  async forgotPassword(@Body() body: ForgotPasswordDto) {
+  async forgotPassword(@Body() body: ForgotPasswordDto, @Res() res: Response) {
     try {
-      return this.agentsService.forgotPassword(body);
+      return this.agentsService.forgotPassword(body, res);
     } catch (error) {
       throw error;
     }

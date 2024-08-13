@@ -62,9 +62,9 @@ export class AdminController {
   @Post('forgot-password')
   @SkipAuth()
   @UsePipes(PasswordMatch)
-  async forgotPassword(@Body() body: ForgotPasswordDto) {
+  async forgotPassword(@Body() body: ForgotPasswordDto, @Res() res: Response) {
     try {
-      return this.adminService.forgotPassword(body);
+      return this.adminService.forgotPassword(body, res);
     } catch (error) {
       throw error;
     }

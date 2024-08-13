@@ -1,7 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {
-  ClassSerializerInterceptor,
+  // ClassSerializerInterceptor,
   HttpStatus,
   UnprocessableEntityException,
   ValidationPipe,
@@ -29,6 +29,7 @@ async function bootstrap(): Promise<NestExpressApplication> {
 
   const PORT = +configService.get('PORT') || 3050;
 
+  // app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
   app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
@@ -36,7 +37,6 @@ async function bootstrap(): Promise<NestExpressApplication> {
     }),
   );
   app.use(cookieParser());
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
 
   app.useGlobalPipes(
     new ValidationPipe({

@@ -56,7 +56,7 @@ export class UsersService {
     }
 
     const generatedAppleId = await this.locationCounterService.generateAppleID(
-      data.city,
+      data.city.toLowerCase(),
       UserTypeEnum.PROSPECT,
     );
     const newPassword = UtilService.generatePassword(

@@ -1,24 +1,20 @@
 import {
   Controller,
-  Post,
-  Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SkipAuth } from './auth.decorator';
-import { IReqUser } from 'src/base.entity';
 
-@SkipAuth()
+// @SkipAuth()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  @SkipAuth()
-  async generateToken(@Body() user: IReqUser) {
-    try {
-      return this.authService.generateToken(user);
-    } catch (error) {
-      throw error;
-    }
-  }
+  // @Post()
+  // async generateToken(@Body() user: IReqUser) {
+  //   try {
+  //     return this.authService.generateToken(user);
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 }
