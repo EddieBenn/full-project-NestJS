@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const token = this.extractTokenFromCookie(request);
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -30,15 +30,19 @@ export class AuthGuard implements CanActivate {
       });
       // We're assigning the payload to the request object here
       // so that we can access it in our route handlers
-      request['user'] = payload.user;
+
+      request['user'] = payload;
     } catch {
       throw new UnauthorizedException();
     }
     return true;
   }
 
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const token = request.cookies?.access_token;
-    return token || undefined;
+  private extractTokenFromCookie(request: Request): string | null {
+    const cookies = request.cookies;
+    if (cookies && cookies['access_token']) {
+      return cookies['access_token'];
+    }
+    return null;
   }
 }

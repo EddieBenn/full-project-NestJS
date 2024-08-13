@@ -5,14 +5,17 @@ import { ConfigService } from '@nestjs/config';
 import { IReqUser } from 'src/base.entity';
 import { Request } from 'express';
 
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
-          return req.cookies?.access_token;
+          let token = null;
+          if (req && req.cookies) {
+            token = req.cookies['access_token'];
+          }
+          return token;
         },
       ]),
       ignoreExpiration: false,
@@ -20,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: { user: IReqUser }) {
-    return payload.user;
+  async validate(payload: IReqUser) {
+    return payload;
   }
 }

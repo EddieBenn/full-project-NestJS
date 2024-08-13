@@ -19,11 +19,6 @@ export class CreateAgentDto {
   @IsString()
   last_name: string;
 
-  @Transform((val) => val.value.toLowerCase())
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
   @IsNotEmpty()
   @IsString()
   @Matches(

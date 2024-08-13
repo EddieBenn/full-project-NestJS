@@ -34,7 +34,7 @@ export class AgentsService {
   @Transactional()
   async createAgent(data: CreateAgentDto, user: IReqUser): Promise<IAgent> {
     const generatedAppleId = await this.locationCounterService.generateAppleID(
-      data.city,
+      data.city.toLowerCase(),
       UserTypeEnum.AGENT,
     );
     const hashedPassword = await UtilService.hashPassword(data.password);
@@ -92,7 +92,7 @@ export class AgentsService {
   }
 
   @Transactional()
-  async forgotPassword(data: ForgotPasswordDto) {
+  async forgotPassword(data: ForgotPasswordDto, res: Response) {
     const agent = await this.agentsRepository.findOne({
       where: { email: data.email },
     });
@@ -104,7 +104,9 @@ export class AgentsService {
       { email: data.email },
       { password: hashedPassword },
     );
-    return `Password reset successful`;
+    return res.status(HttpStatus.OK).json({
+      message: 'Agent Password reset successful',
+    });
   }
 
   @Transactional()
