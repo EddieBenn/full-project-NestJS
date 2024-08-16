@@ -163,7 +163,7 @@ export class UsersService {
 
 
   @Transactional()
-  async forgotPassword(data: ForgotPasswordDto) {
+  async forgotPassword(data: ForgotPasswordDto, res: Response) {
     const user = await this.usersRepository.findOne({
       where: { email: data.email },
     });
@@ -175,7 +175,9 @@ export class UsersService {
       { email: data.email },
       { password: hashedPassword },
     );
-    return `Password reset successful`;
+    return res.status(HttpStatus.OK).json({
+      message: 'User password reset successful',
+    });
   }
   
   async logoutUser(res: Response) {
@@ -194,7 +196,7 @@ export class UsersService {
     return this.usersRepository.delete(id);
   }
 
-  async reassignOneUser(new_agent_id: string, user_id: string) {
+  async reassignOneUser(new_agent_id: string, user_id: string, res: Response) {
     const getNewAgent = await this.agentsService.getAgentById(new_agent_id)
     if(!getNewAgent.id) {
       throw new NotFoundException(`agent with id: ${new_agent_id} not found`)
@@ -211,13 +213,16 @@ export class UsersService {
       throw new BadRequestException(`Agent not in the same city as user. User city is: ${getUser.city}, while agent is in ${getNewAgent.city}`);
     }
 
-    return this.usersRepository.update(
+    await this.usersRepository.update(
       { id: user_id},
       { agent_id: new_agent_id } 
     )
+    return res.status(HttpStatus.OK).json({
+      message: 'User Successful Reassigned',
+    });
   }
 
-  async reassignAllUsersOfAnAgent(new_agent_id: string, current_agent_id: string) {
+  async reassignAllUsersOfAnAgent(new_agent_id: string, current_agent_id: string, res: Response) {
     const getNewAgent = await this.agentsService.getAgentById(new_agent_id)
     if(!getNewAgent.id) {
       throw new NotFoundException(`new agent assignee with id: ${new_agent_id} not found`)
@@ -232,9 +237,12 @@ export class UsersService {
       throw new BadRequestException(`Both agents are not in the same city. Current agent city is: ${getCurrentAgent.city}, while new agent assignee is in ${getNewAgent.city}`);
     }
 
-    return this.usersRepository.update(
+    await this.usersRepository.update(
       { agent_id: current_agent_id},
       { agent_id: new_agent_id }
     )
+    return res.status(HttpStatus.OK).json({
+      message: 'All Users Successful Reassigned',
+    });
   }
 }
