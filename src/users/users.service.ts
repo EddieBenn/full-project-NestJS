@@ -196,6 +196,7 @@ export class UsersService {
     return this.usersRepository.delete(id);
   }
 
+  @Transactional()
   async reassignOneUser(new_agent_id: string, user_id: string, res: Response) {
     const getNewAgent = await this.agentsService.getAgentById(new_agent_id)
     if(!getNewAgent.id) {
@@ -222,6 +223,7 @@ export class UsersService {
     });
   }
 
+  @Transactional()
   async reassignAllUsersOfAnAgent(new_agent_id: string, current_agent_id: string, res: Response) {
     const getNewAgent = await this.agentsService.getAgentById(new_agent_id)
     if(!getNewAgent.id) {
