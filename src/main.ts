@@ -53,7 +53,7 @@ async function bootstrap(): Promise<NestExpressApplication> {
   const config = new DocumentBuilder()
     .setTitle('Apple Rentals Service')
     .setDescription(
-      'The service enables you rent apple devices and pay in intallments',
+      'This service enables you rent apple devices and pay in intallments',
     )
     .setVersion('1.0')
     .addCookieAuth('access_token', {

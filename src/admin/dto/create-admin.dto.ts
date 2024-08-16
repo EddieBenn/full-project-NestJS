@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Transform } from 'class-transformer';
 import {
   IsEmail,
@@ -9,19 +10,26 @@ import {
 import { GenderEnum } from 'src/users/dto/create-user.dto';
 
 export class CreateAdminDto {
+  @ApiProperty({ example: 'John', description: 'First name of the admin' })
   @IsNotEmpty()
   @IsString()
   first_name: string;
 
+  @ApiProperty({ example: 'Doe', description: 'Last name of the admin' })
   @IsNotEmpty()
   @IsString()
   last_name: string;
 
+  @ApiProperty({ example: 'user@example.com', description: 'Email of the admin' })
   @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @ApiProperty({
+    example: 'Strongpassword123*',
+    description: 'New password of the admin',
+  })
   @IsNotEmpty()
   @IsString()
   @Matches(
@@ -33,15 +41,18 @@ export class CreateAdminDto {
   )
   password: string;
 
+  @ApiProperty({ example: '+2348104467932', description: 'Phone number of the admin' })
   @IsNotEmpty()
   @IsString()
   phone: string;
 
+  @ApiProperty({ example: 'Lagos', description: 'City of the admin' })
   @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsString()
   city: string;
 
+  @ApiProperty({ example: 'male', description: 'Gender of the admin' })
   @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsEnum(GenderEnum)

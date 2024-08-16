@@ -106,7 +106,7 @@ export class AgentsController {
 
   @ApiOperation({ summary: 'Agent Login' })
   @ApiBody({ type: LoginDto })
-  @ApiResponse({ status: 200, type: CreateAgentDto })
+  @ApiResponse({ status: 201, type: CreateAgentDto })
   @ApiNotFoundResponse({ description: 'Agent not found' })
   @ApiUnauthorizedResponse({ description: 'Invalid password' })
   @Post('login')
