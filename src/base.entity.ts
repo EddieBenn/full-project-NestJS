@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsEmail, IsString, Matches } from 'class-validator';
 import {
@@ -52,11 +53,19 @@ export enum ADMIN_ROLES {
 }
 
 export class ForgotPasswordDto {
+  @ApiProperty({
+    example: 'user@example.com',
+    description: 'The email of the user',
+  })
   @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @ApiProperty({
+    example: 'strongPassword123',
+    description: 'New password of the user',
+  })
   @IsNotEmpty()
   @IsString()
   @Matches(
@@ -68,6 +77,10 @@ export class ForgotPasswordDto {
   )
   new_password: string;
 
+  @ApiProperty({
+    example: 'strongPassword123',
+    description: 'Confirm password of the user',
+  })
   @IsNotEmpty()
   @IsString()
   @Matches(
@@ -81,11 +94,19 @@ export class ForgotPasswordDto {
 }
 
 export class LoginDto {
+  @ApiProperty({
+    example: 'user@example.com',
+    description: 'The email of the user',
+  })
   @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @ApiProperty({
+    example: 'strongPassword123',
+    description: 'The password of the user',
+  })
   @IsNotEmpty()
   @IsString()
   @Matches(
