@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
@@ -11,14 +12,20 @@ import { IPagination } from 'src/base.entity';
 import { GenderEnum } from 'src/users/dto/create-user.dto';
 
 export class CreateAgentDto {
+  @ApiProperty({ example: 'John', description: 'First name of the agent' })
   @IsNotEmpty()
   @IsString()
   first_name: string;
 
+  @ApiProperty({ example: 'Doe', description: 'Last name of the agent' })
   @IsNotEmpty()
   @IsString()
   last_name: string;
 
+  @ApiProperty({
+    example: 'Strongpassword123@',
+    description: 'New password of the agent',
+  })
   @IsNotEmpty()
   @IsString()
   @Matches(
@@ -30,16 +37,19 @@ export class CreateAgentDto {
   )
   password: string;
 
+  @ApiProperty({ example: '+2348104467932', description: 'Phone number of the agent' })
   @IsNotEmpty()
   @IsString()
   @MinLength(10)
   phone: string;
 
+  @ApiProperty({ example: 'Lagos', description: 'City of the agent' })
   @Transform((val) => val.value.toLowerCase())
   @IsNotEmpty()
   @IsString()
   city: string;
 
+  @ApiProperty({ example: 'male', description: 'Gender of the agent' })
   @IsNotEmpty()
   @IsEnum(GenderEnum)
   gender: GenderEnum;

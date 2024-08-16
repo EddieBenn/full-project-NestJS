@@ -63,7 +63,7 @@ export class ForgotPasswordDto {
   email: string;
 
   @ApiProperty({
-    example: 'strongPassword123',
+    example: 'Strongpassword123*',
     description: 'New password of the user',
   })
   @IsNotEmpty()
@@ -78,7 +78,7 @@ export class ForgotPasswordDto {
   new_password: string;
 
   @ApiProperty({
-    example: 'strongPassword123',
+    example: 'Strongpassword123@',
     description: 'Confirm password of the user',
   })
   @IsNotEmpty()
@@ -104,7 +104,7 @@ export class LoginDto {
   email: string;
 
   @ApiProperty({
-    example: 'strongPassword123',
+    example: 'Strongpassword123$',
     description: 'The password of the user',
   })
   @IsNotEmpty()

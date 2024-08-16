@@ -4,7 +4,7 @@ import { SkipAuth } from './auth/auth.decorator';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @SkipAuth()
-@ApiTags('Base-route')
+@ApiTags('Base Route')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
