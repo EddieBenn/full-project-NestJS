@@ -41,7 +41,7 @@ class UtilityService {
     const randomNumber = Math.floor(1000 + Math.random() * 90000);
   
     // Define a set of special characters
-    const specialCharacters = "!@#$%^&*()_+[]{}|;:',.<>?";
+    const specialCharacters = "!@$%&*?";
   
     // Choose a random special character
     const randomSpecialChar = specialCharacters.charAt(Math.floor(Math.random() * specialCharacters.length));

@@ -1,6 +1,25 @@
-import { Controller, Post, Body, Param, Req, UseGuards, Get, Query, ParseUUIDPipe, Put, UsePipes, Res, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Req,
+  UseGuards,
+  Get,
+  Query,
+  ParseUUIDPipe,
+  Put,
+  UsePipes,
+  Res,
+  Delete,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, ReassignAllUsersDto, ReassignOneUserDto, UserFilter } from './dto/create-user.dto';
+import {
+  CreateUserDto,
+  ReassignAllUsersDto,
+  ReassignOneUserDto,
+  UserFilter,
+} from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/auth/role.decorator';
@@ -42,13 +61,20 @@ export class UsersController {
     }
   }
 
-  @Post('reassign')
+  @Put('reassign')
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
-  async reassignAllUsersOfAnAgent(@Body() body: ReassignAllUsersDto) {
+  async reassignAllUsersOfAnAgent(
+    @Body() body: ReassignAllUsersDto,
+    @Res() res: Response,
+  ) {
     try {
       const { new_agent_id, current_agent_id } = body;
-      return this.usersService.reassignAllUsersOfAnAgent(new_agent_id, current_agent_id);
+      return this.usersService.reassignAllUsersOfAnAgent(
+        new_agent_id,
+        current_agent_id,
+        res,
+      );
     } catch (error) {
       throw error;
     }
@@ -60,10 +86,11 @@ export class UsersController {
   reassignOneUser(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() body: ReassignOneUserDto,
+    @Res() res: Response,
   ) {
     try {
-      const { new_agent_id } = body
-      return this.usersService.reassignOneUser(new_agent_id, id);
+      const { new_agent_id } = body;
+      return this.usersService.reassignOneUser(new_agent_id, id, res);
     } catch (error) {
       throw error;
     }
@@ -86,9 +113,9 @@ export class UsersController {
   @Post('forgot-password')
   @SkipAuth()
   @UsePipes(PasswordMatch)
-  async forgotPassword(@Body() body: ForgotPasswordDto) {
+  async forgotPassword(@Body() body: ForgotPasswordDto, @Res() res: Response) {
     try {
-      return this.usersService.forgotPassword(body);
+      return this.usersService.forgotPassword(body, res);
     } catch (error) {
       throw error;
     }
