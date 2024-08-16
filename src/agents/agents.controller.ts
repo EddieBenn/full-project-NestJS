@@ -1,19 +1,27 @@
 import { Controller, Get, Post, Body, Param, Delete, Query, ParseUUIDPipe, Put, UseGuards, UsePipes, Res, Req } from '@nestjs/common';
 import { AgentsService } from './agents.service';
 import { AgentFilter, CreateAgentDto } from './dto/create-agent.dto';
-import { UpdateAgentDto } from './dto/update-agent.dto';
+import { UpdateAgentDto, UpdateAgentResponseDto } from './dto/update-agent.dto';
 import { RoleGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/auth/role.decorator';
 import { ADMIN_ROLES, ForgotPasswordDto, LoginDto } from 'src/base.entity';
 import { PasswordMatch } from 'src/auth/password-match.pipe';
 import { Response } from 'express';
 import { SkipAuth } from 'src/auth/auth.decorator';
+import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiResponse, ApiSecurity, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { PaginationResponseDto } from './dto/paginate.dto';
 
-
+@ApiTags('Agents')
 @Controller('agents')
 export class AgentsController {
   constructor(private readonly agentsService: AgentsService) {}
 
+
+  @ApiOperation({ summary: 'Create Agent' })
+  @ApiBody({ type: CreateAgentDto })
+  @ApiCreatedResponse({ type: CreateAgentDto })
+  @ApiBadRequestResponse()
+  @ApiSecurity('access_token')
   @Post()
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
@@ -25,6 +33,15 @@ export class AgentsController {
     }
   }
 
+  @ApiOperation({ summary: 'Get All Agents' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'size', required: false, type: Number, description: 'Number of items per page' })
+  @ApiQuery({ name: 'city', required: false, type: Number, description: 'City of agents' })
+  @ApiQuery({ name: 'email', required: false, type: Number, description: 'Email of a agent' })
+  @ApiQuery({ name: 'phone', required: false, type: Number, description: 'Phone number of a agent' })
+  @ApiOkResponse({ type: PaginationResponseDto, description: 'Paginated list of users' })
+  @ApiBadRequestResponse()
+  @ApiSecurity('access_token')
   @Get()
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
@@ -36,6 +53,11 @@ export class AgentsController {
     }
   }
 
+  @ApiOperation({ summary: 'Get One Agent' })
+  @ApiOkResponse({ type: CreateAgentDto, description: 'Agent successfully fetched' })
+  @ApiNotFoundResponse({ description: 'Agent not found' })
+  @ApiBadRequestResponse()
+  @ApiSecurity('access_token')
   @Get(':id')
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
@@ -47,6 +69,11 @@ export class AgentsController {
     }
   }
 
+  @ApiOperation({ summary: 'Update Agent' })
+  @ApiBody({ type: UpdateAgentResponseDto })
+  @ApiOkResponse({ description: 'Agent successfully updated'})
+  @ApiBadRequestResponse()
+  @ApiSecurity('access_token')
   @Put(':id')
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
@@ -61,6 +88,11 @@ export class AgentsController {
     }
   }
 
+  @ApiOperation({ summary: 'Reset Agent Password' })
+  @ApiBody({ type: ForgotPasswordDto })
+  @ApiOkResponse({ description: 'Agent password reset successful'})
+  @ApiNotFoundResponse({ description: 'Agent not found' })
+  @ApiBadRequestResponse()
   @Post('forgot-password')
   @SkipAuth()
   @UsePipes(PasswordMatch)
@@ -72,6 +104,11 @@ export class AgentsController {
     }
   }
 
+  @ApiOperation({ summary: 'Agent Login' })
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({ status: 200, type: CreateAgentDto })
+  @ApiNotFoundResponse({ description: 'Agent not found' })
+  @ApiUnauthorizedResponse({ description: 'Invalid password' })
   @Post('login')
   @SkipAuth()
   async login(@Body() body: LoginDto, @Res() res: Response) {
@@ -82,6 +119,9 @@ export class AgentsController {
     }
   }
 
+  @ApiOperation({ summary: 'Logout Agent', description: 'Agent successfully logged out' })
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
   @Post('logout')
   @SkipAuth()
   async logout(@Res() res: Response) {
@@ -92,7 +132,10 @@ export class AgentsController {
     }
   }
 
-
+  @ApiOperation({ summary: 'Delete Agent',  description: 'Agent successfully deleted' })
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
+  @ApiSecurity('access_token')
   @Delete(':id')
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN)

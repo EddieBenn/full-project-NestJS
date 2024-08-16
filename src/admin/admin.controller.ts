@@ -8,7 +8,8 @@ import { Roles } from 'src/auth/role.decorator';
 import { ADMIN_ROLES, ForgotPasswordDto, LoginDto } from 'src/base.entity';
 import { PasswordMatch } from 'src/auth/password-match.pipe';
 import { Response } from 'express';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Admin')
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
