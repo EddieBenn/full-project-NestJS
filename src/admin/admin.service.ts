@@ -90,7 +90,7 @@ export class AdminService {
     );
 
     return res.status(HttpStatus.OK).json({
-      message: 'Password reset successful',
+      message: 'Admin password reset successful',
     });
   }
 
