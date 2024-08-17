@@ -7,7 +7,7 @@ import { LocationCounterModule } from './location-counter/location-counter.modul
 import { UsersModule } from './users/users.module';
 import { AgentsModule } from './agents/agents.module';
 import { AuthModule } from './auth/auth.module';
-import typeorm from '../ormconfig';
+import typeorm from '../prod-ormconfig';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { AdminModule } from './admin/admin.module';
