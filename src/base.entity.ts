@@ -95,7 +95,7 @@ export class ForgotPasswordDto {
 
 export class LoginDto {
   @ApiProperty({
-    example: 'user@example.com',
+    example: 'app-ag-ib-1@apple.com',
     description: 'The email of the user',
   })
   @Transform((val) => val.value.toLowerCase())
@@ -104,7 +104,7 @@ export class LoginDto {
   email: string;
 
   @ApiProperty({
-    example: 'Strongpassword123$',
+    example: 'Password5%',
     description: 'The password of the user',
   })
   @IsNotEmpty()
