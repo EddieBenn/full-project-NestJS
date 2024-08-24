@@ -12,6 +12,7 @@ import {
   UsePipes,
   Res,
   Delete,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -29,6 +30,7 @@ import { Response } from 'express';
 import { SkipAuth } from 'src/auth/auth.decorator';
 import { ApiBadRequestResponse, ApiBody, ApiCookieAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiResponse, ApiSecurity, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { PaginationResponseDto } from './dto/paginate.dto';
+import { PasswordOmitResponse } from 'src/auth/password-omit.interceptor';
 
 @ApiTags('Users')
 @Controller('users')
@@ -45,6 +47,7 @@ export class UsersController {
   @Post()
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
+  @UseInterceptors(PasswordOmitResponse)
   async createUser(@Body() body: CreateUserDto, @Req() req: any) {
     try {
       return this.usersService.createUser(body, req?.user);
@@ -77,6 +80,7 @@ export class UsersController {
   @ApiBadRequestResponse()
   @ApiSecurity('access_token')
   @Get(':id')
+  @UseInterceptors(PasswordOmitResponse)
   getUserById(@Param('id', new ParseUUIDPipe()) id: string) {
     try {
       return this.usersService.getUserById(id);

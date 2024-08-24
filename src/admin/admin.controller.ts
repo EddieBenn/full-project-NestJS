@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, Query, ParseUUIDPipe, Put, UsePipes, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Query, ParseUUIDPipe, Put, UsePipes, Res, UseInterceptors } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { AdminFilter, CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -10,6 +10,7 @@ import { PasswordMatch } from 'src/auth/password-match.pipe';
 import { Response } from 'express';
 import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiResponse, ApiSecurity, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { PaginationResponseDto } from './dto/paginate.dto';
+import { PasswordOmitResponse } from 'src/auth/password-omit.interceptor';
 @ApiTags('Admin')
 @Controller('admin')
 export class AdminController {
@@ -20,6 +21,7 @@ export class AdminController {
   @ApiCreatedResponse({ type: CreateAdminDto })
   @Post()
   @SkipAuth()
+  @UseInterceptors(PasswordOmitResponse)
   async createAdmin(@Body() body: CreateAdminDto) {
     try {
       return this.adminService.createAdmin(body);
@@ -56,6 +58,7 @@ export class AdminController {
   @Get(':id')
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN)
+  @UseInterceptors(PasswordOmitResponse)
   getAdminById(@Param('id', new ParseUUIDPipe()) id: string) {
     try {
       return this.adminService.getAdminById(id);
