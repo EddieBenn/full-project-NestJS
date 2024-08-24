@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Query, ParseUUIDPipe, Put, UseGuards, UsePipes, Res, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, ParseUUIDPipe, Put, UseGuards, UsePipes, Res, Req, UseInterceptors } from '@nestjs/common';
 import { AgentsService } from './agents.service';
 import { AgentFilter, CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto, UpdateAgentResponseDto } from './dto/update-agent.dto';
@@ -10,6 +10,7 @@ import { Response } from 'express';
 import { SkipAuth } from 'src/auth/auth.decorator';
 import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiResponse, ApiSecurity, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { PaginationResponseDto } from './dto/paginate.dto';
+import { PasswordOmitResponse } from 'src/auth/password-omit.interceptor';
 
 @ApiTags('Agents')
 @Controller('agents')
@@ -25,6 +26,7 @@ export class AgentsController {
   @Post()
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
+  @UseInterceptors(PasswordOmitResponse)
   async createAgent(@Body() body: CreateAgentDto, @Req() req: any) {
     try {
       return this.agentsService.createAgent(body, req?.user);
@@ -61,6 +63,7 @@ export class AgentsController {
   @Get(':id')
   @UseGuards(RoleGuard)
   @Roles(ADMIN_ROLES.ADMIN, ADMIN_ROLES.AGENT)
+  @UseInterceptors(PasswordOmitResponse)
   getAgentById(@Param('id', new ParseUUIDPipe()) id: string) {
     try {
       return this.agentsService.getAgentById(id);
