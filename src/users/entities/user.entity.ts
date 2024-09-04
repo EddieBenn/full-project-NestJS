@@ -18,7 +18,7 @@ import { Agents } from 'src/agents/entities/agent.entity';
 @Unique(['email'])
 @Unique(['phone'])
 @Unique(['apple_id'])
-@Entity({ name: 'users' })
+@Entity({ name: 'users', schema: 'rental_service' })
 export class Users extends BaseEntity {
   @BeforeInsert()
   fieldsToModify() {
