@@ -9,6 +9,7 @@ const {
   PROD_DB_HOST,
   PROD_DB_PASSWORD,
   PROD_DB_USERNAME,
+  PROD_DB_SCHEMA
 } = process.env;
 
 const config = {
@@ -18,6 +19,7 @@ const config = {
   username: PROD_DB_USERNAME!,
   password: PROD_DB_PASSWORD!,
   database: PROD_DB_NAME!,
+  schema: PROD_DB_SCHEMA!,
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: true,
   logging: true,
