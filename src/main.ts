@@ -51,7 +51,7 @@ async function bootstrap(): Promise<NestExpressApplication> {
   app.useGlobalFilters(new HttpExceptionFilter(reflector));
 
   const config = new DocumentBuilder()
-    .setTitle('Apple Rentals Service')
+    .setTitle('Apple Rental Service')
     .setDescription(
       'This service enables you rent apple devices and pay in intallments',
     )
