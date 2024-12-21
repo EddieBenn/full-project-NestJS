@@ -1,5 +1,4 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { addTransactionalDataSource } from 'typeorm-transactional';
 
 let dataSource: DataSource | null = null;
 
@@ -10,7 +9,7 @@ export async function initializeDataSource(
     return dataSource;
   }
 
-  dataSource = addTransactionalDataSource(new DataSource(options));
+  dataSource = new DataSource(options);
   await dataSource.initialize();
   return dataSource;
 }
