@@ -9,8 +9,9 @@ import { AgentsModule } from './agents/agents.module';
 import { AuthModule } from './auth/auth.module';
 import typeorm from '../prod-ormconfig';
 import { addTransactionalDataSource } from 'typeorm-transactional';
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { AdminModule } from './admin/admin.module';
+import { initializeDataSource } from './datasource';
 
 @Module({
   imports: [
@@ -20,13 +21,20 @@ import { AdminModule } from './admin/admin.module';
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) =>
-        configService.get('typeorm'),
-      async dataSourceFactory(options) {
-        if (!options) {
-          throw new Error('Invalid options passed');
+      useFactory: async (configService: ConfigService) => {
+        try {
+          const options: DataSourceOptions =
+            configService.get<DataSourceOptions>('typeorm');
+          if (!options) {
+            throw new Error('Invalid options passed');
+          }
+          const dataSource = await initializeDataSource(options);
+          addTransactionalDataSource(dataSource);
+          return dataSource.options;
+        } catch (error) {
+          console.error('Error connecting to the database:', error);
+          throw error;
         }
-        return addTransactionalDataSource(new DataSource(options));
       },
     }),
     LocationCounterModule,
