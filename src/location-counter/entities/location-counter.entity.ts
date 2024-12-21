@@ -3,7 +3,7 @@ import { UserTypeEnum } from '../dto/create-location-counter.dto';
 import { BaseEntity } from '../../base.entity';
 
 @Unique(['city_code', 'user_type'])
-@Entity({ name: 'location-counter', schema: 'rental_service' })
+@Entity({ name: 'location-counter' })
 export class LocationCounter extends BaseEntity {
   @BeforeInsert()
   fieldsToModify() {

@@ -6,7 +6,7 @@ import { Agents } from 'src/agents/entities/agent.entity';
 
 @Unique(['email'])
 @Unique(['phone'])
-@Entity({ name: 'admin', schema: 'rental_service' })
+@Entity({ name: 'admin' })
 export class Admin extends BaseEntity {
   @BeforeInsert()
   fieldsToModify() {
