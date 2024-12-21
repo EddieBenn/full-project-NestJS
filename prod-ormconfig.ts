@@ -9,7 +9,7 @@ const {
   PROD_DB_HOST,
   PROD_DB_PASSWORD,
   PROD_DB_USERNAME,
-  PROD_DB_SCHEMA
+  PROD_DB_SSL
 } = process.env;
 
 const config = {
@@ -19,11 +19,11 @@ const config = {
   username: PROD_DB_USERNAME!,
   password: PROD_DB_PASSWORD!,
   database: PROD_DB_NAME!,
-  schema: PROD_DB_SCHEMA!,
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: true,
   logging: true,
   migrations: ['dist/src/migrations/*{.ts,.js}'],
+  ssl: PROD_DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   // migrationsRun: true,
   // autoLoadEntities: true,
 };
