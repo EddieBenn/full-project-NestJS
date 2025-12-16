@@ -6,6 +6,7 @@ import { Users } from './entities/user.entity';
 import { LocationCounterModule } from 'src/location-counter/location-counter.module';
 import { AgentsModule } from 'src/agents/agents.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { TwilioModule } from 'src/twilio/twilio.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { AuthModule } from 'src/auth/auth.module';
     ]),
     LocationCounterModule,
     AgentsModule,
-    AuthModule
+    AuthModule,
+    TwilioModule
   ],
   controllers: [UsersController],
   providers: [UsersService],
